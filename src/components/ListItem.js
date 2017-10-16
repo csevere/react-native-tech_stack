@@ -6,6 +6,18 @@ import  * as actions from '../actions'; //give me everything exported from actio
 
 
 class ListItem extends Component{
+
+    renderDescription(){
+        const { library, selectedLibraryId} = this.props; 
+
+        if(library.id === selectedLibraryId){
+            return(
+                <Text>{library.description}</Text>
+
+            );
+        }
+    }
+
     render(){
         const { titleStyle } = styles;
         const { id, title } = this.props.library; 
@@ -13,13 +25,16 @@ class ListItem extends Component{
 
 
         return(
-            <TouchableWithoutFeedback onPress = {()=> this.props.selectLibrary(id)}>
+            <TouchableWithoutFeedback 
+                onPress = {() => this.props.selectLibrary(id)}
+            >
                 <View>
                     <CardSection>
                         <Text style = {titleStyle}>
                             {title}
                         </Text>
                     </CardSection>
+                    {this.renderDescription()}
                 </View> 
             </TouchableWithoutFeedback>
 
@@ -36,8 +51,12 @@ const styles = {
     }
 }
 
+const mapStateToProps = state => {
+    return { selectedLibraryId: state.selectedLibraryId }
 
-export default connect(null, actions)(ListItem); 
+};
+
+export default connect(mapStateToProps, actions)(ListItem); 
 
 //the first argument is for mapStateToProps, if you don't to pass mapStateToProps, replace it with null 
 //touchablewithoutfeedback - no highlight or fancy opacity fade, etc 
